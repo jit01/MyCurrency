@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Currency Converter{% endblock %}
+
+{% block content %}
+<h2>Convert Currency</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label>Source Currency:</label>
+        <select name="source_currency" class="form-control">
+            {% for currency in currencies %}
+            <option value="{{ currency.code }}" {% if currency.code == source_selected %}selected{% endif %}>
+                {{ currency.code }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label>Target Currency:</label>
+        <select name="target_currency" class="form-control">
+            {% for currency in currencies %}
+            <option value="{{ currency.code }}" {% if currency.code == target_selected %}selected{% endif %}>
+                {{ currency.code }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label>Amount:</label>
+        <input type="number" name="amount" class="form-control" value="{{ amount_entered }}" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Convert</button>
+</form>
+
+{% if result %}
+<h3>Converted Amount: {{ result }}</h3>
+{% endif %}
+{% endblock %}
